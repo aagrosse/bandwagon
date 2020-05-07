@@ -8,12 +8,14 @@ import BottomPlayer from "./components/PlayerFooter"
 import Layout from "./components/Layout"
 import Subscription from "./components/Subscription"
 
+// import FileInput from "./components/FileInput"
+// import AWS from "./stitch/app"
 
-import Artist from "./pages/Artist"
 import {StoreProvider} from "./utils/globalContext"
 import Login from "./components/LoginForm"
 import Signup from "./components/SignupForm"
 import ActivateUser from './components/ActivateUser';
+import ArtistPage from "./components/ArtistPage"
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -27,8 +29,11 @@ function App() {
         <Route exact path='/signup' component={Signup}/>
         <Route exact path='/activate/:token' component={ActivateUser}/>
         <Route exact path='/listener' component={Center}/>
-        <Route exact path='/artist' component={Artist}/>
+        {/* <Route exact path='/admin/dashboard' component={Admin}/> */}
+        {/* <Route exact path='/test' component={AWS}/> */}
         <Route exact path='/subscription' component={Subscription}/>
+        <Route exact path='/artistpage' component={ArtistPage}/>
+
         </StoreProvider>
       </Router>
   );

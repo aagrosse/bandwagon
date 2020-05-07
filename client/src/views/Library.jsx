@@ -4,44 +4,18 @@ import { Container, Row, Col, Table, Form, Button } from "react-bootstrap";
 import Card from "../components/adCard.jsx";
 import { thArray, tdArray } from "../variables/Variables.jsx";
 
-function TableList(props) {
-  const fileInput = React.createRef()
-  const handleFileUpload = props.handleFileUpload
 
-  function handleSubmit(event) {
-    event.preventDefault()
-    const file = fileInput.current.files[0]
-    console.log(`selected file - ${file.name}`);
-    handleFileUpload(file)
-  }
 
-     return (
+
+class Library extends Component {
+  render() {
+    return (
+
+
+     
       <div className="content">
         <Container fluid>
           <Row>
-            <Col md={12}>
-              <Card
-                title="Upload Music"
-                category="Enter info below to upload."
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Form className="m-3" onSubmit={handleSubmit}>
-                    <Form.Group controlId="formBasicPassword">
-                      <Form.Label>Upload Audio</Form.Label>
-                      <Form.Control type="file" ref={fileInput}/>
-                    </Form.Group>
-                    <Button variant="danger" type="submit">
-                      Upload
-                    </Button>
-                  </Form>
-                }
-              />
-            </Col>
-
-
-
-
             <Col md={12}>
               <Card
                 title="Uploaded Music"
@@ -77,8 +51,9 @@ function TableList(props) {
           </Row>
         </Container>
       </div>
-    );
+      );
+    }
   }
 
 
-export default TableList;
+export default Library;

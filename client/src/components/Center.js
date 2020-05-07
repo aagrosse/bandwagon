@@ -4,11 +4,11 @@ import ArtistContainer from "./ArtistContainer"
 import Search from "./Searchbar"
 import ReactDOM from "react-dom";
 import ReactJkMusicPlayer from "react-jinke-music-player";
-// import "react-jinke-music-player/assets/index.css";
-// import "../../src/assets/less/test.less"
+import "react-jinke-music-player/assets/index.css";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
-// import "react-jinke-music-player/lib/styles/index.less";
+import "react-jinke-music-player/lib/styles/index.less";
  
 
 
@@ -69,7 +69,7 @@ const options = {
     remember: false,
 
     //The Audio Can be deleted  [type `Boolean`, default `true`]
-    remove: true,
+    remove: false,
 
     //audio controller initial position    [ type `Object` default '{top:0,left:0}' ]
     defaultPosition: {
@@ -95,10 +95,10 @@ const options = {
     toggleMode: true,
 
     //audio cover is show of the "mini" mode [type `Boolean` default 'true']
-    showMiniModeCover: true,
+    showMiniModeCover: false,
 
     //audio playing progress is show of the "mini"  mode
-    showMiniProcessBar: false,
+    showMiniProcessBar: true,
 
     //audio controller is can be drag of the "mini" mode     [type `Boolean` default `true`]
     drag: true,
@@ -125,7 +125,7 @@ const options = {
     showPlayMode: true,
 
     //theme toggle switch  display of the audio player panel   [type `Boolean` default `true`]
-    showThemeSwitch: true,
+    showThemeSwitch: false,
 
     //lyric display of the audio player panel   [type `Boolean` default `false`]
     showLyric: false,
@@ -156,17 +156,17 @@ const options = {
 //placeholder code
 
 function Center() {
-    let backgroundImageVariable = "https://www.followlyrics.com/storage/7/62272.jpg"
+    let backgroundImageVariable = "https://upload.wikimedia.org/wikipedia/commons/7/77/Question_mark-pixels.jpg"
     return (
        
-        <div style={{backgroundColor: "#303030", height: "100vh"}} id="centerDiv">
+        <div style={{backgroundColor: "#303030"}} id="centerDiv">
             <Search />
 
-            <div className="containerTest" style={{ backgroundImage: 'url(https://www.followlyrics.com/storage/7/62272.jpg)', backgroundSize: "150%" }}>
+            {/* <div className="containerTest" style={{ backgroundImage: `url(${backgroundImageVariable})`, backgroundSize: "150%", backgroundPosition: "center" }}>
                 <ArtistContainer  />
                 <i class="fas fa-heart fa-2x"></i>
                 <i class="fas fa-share fa-2x"></i>
-            </div>
+            </div> */}
             <ReactJkMusicPlayer {...options} />
         </div>
        
