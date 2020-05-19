@@ -28,11 +28,20 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: '',
+        required: true,
     },
     resetPasswordLink: {
         data: String,
         default: ''
-    }
+    },
+    paymentRequired: {
+        type: String,
+        default: 'false'
+    },
+    subscriptionToken: {
+        type: Number,
+        default: 0
+    },
 },
 { timestamps: true},
 );
@@ -54,7 +63,7 @@ userSchema.virtual('password')
 userSchema.methods = {
     //checks if password user entered matches with the hashed password on DB
     authenticate: function(passwordText){
-        return this.encryptPassword === this.hashedPassword 
+        return this.encryptPassword(passwordText) === this.hashedPassword 
     },
 
     encryptPassword: function (password) {
@@ -76,4 +85,5 @@ userSchema.methods = {
     },
 }
 
-module.exports = mongoose.model('user', userSchema)
+module.exports =User = mongoose.model('user', userSchema)
+// module.exports = Album = mongoose.model('album', AlbumSchema);

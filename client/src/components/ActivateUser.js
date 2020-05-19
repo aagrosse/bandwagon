@@ -1,42 +1,45 @@
-import React, {useState, useEffect}  from "react";
-import {BrowserRouter, Redirect} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Redirect } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+// import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
 import axios from 'axios'
 import jwt from 'jsonwebtoken';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-
+import API from "../utils/API"
 
 import "../App.css"
 
 
-function ActivateUser (props) {
+function ActivateUser(props) {
     const [userAuthState, setAuthState] = React.useState({
         name: '',
         token: '',
-        display: true
+        role:'',
+        email:'',
+        display: true,
+        userId:''
     })
 
-    
+
     useEffect(() => {
         let token = props.match.params.token;
-        let { name } = jwt.decode(token);
+        let { name, role, email } = jwt.decode(token);
 
         if (token) {
-            setAuthState({ ...userAuthState, name, token });
+            setAuthState({ ...userAuthState, name, token, role, email });
         }
     }, []);
 
-    const { name, token, display } = userAuthState;
+    const { name, token, role, email, display } = userAuthState;
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        activateAccountAPICall();
+       await activateAccountAPICall();
 
         //reset the user inputs
         setAuthState({
@@ -47,33 +50,45 @@ function ActivateUser (props) {
 
 
 
-const activateAccountAPICall = () => {
-    axios({
-        method: 'POST',
-        url: `http://localhost:8000/api/activate-account`,
-        data: {token:userAuthState.token}
-    })
-        .then(res => {
-            console.log('ACCOUNT ACTIVATION', res);
-            setAuthState({ ...userAuthState, display: false });
-            toast.success('Your Account has been activated');
+    const activateAccountAPICall = () => {
+        axios({
+            method: 'POST',
+            url: `/api/activate-account`,
+            data: { token: userAuthState.token }
         })
-        .catch(err => {
-            // console.log('ACCOUNT ACTIVATION ERROR', err);
-            console.log('ACCOUNT ACTIVATION ERROR', err.response.data.error);
-            toast.error('Activation Failed - Account already active');
-        });
+            .then(res => {
+                console.log('ACCOUNT ACTIVATION', res);
+                if(role !== 'admin'){
+                    if(role==='artist'){
+                        //cretae artist profile
+                        createArtistProfile({name:name, email: email, userId: res.data.id})
+                    }
+                    setAuthState({ ...userAuthState, userId: res.data.id, display: false });
+                    toast.success('Your Account has been activated');
+                } else  if(role === 'admin'){
+                    toast.success('Account has been activated');
+                   }          
+            })
+            .catch(err => {
+                // console.log('ACCOUNT ACTIVATION ERROR', err);
+                console.log('ACCOUNT ACTIVATION ERROR', err.response.data.error);
+                toast.error('Activation Failed - Account already active');
+            });
+    }
+const createArtistProfile =(data)=>{
+ //cretae artist profile
+ API.createArtist(data).then(res=>{
+     console.log("artist created")
+ }).catch(err=>{
+     console.log("error "+ err)
+ })
 }
-
-
-
-
 
     return (
 
         <div id="loginContainer">
             <Container style={{ justifyContent: "center" }}>
-            {!display ? <Redirect to="/" /> : null }
+                {!display ? <Redirect to="/" /> : null}
                 <Row>
                     <img style={{ margin: "1% auto" }} id="loginLogo" src={require("./images/newlogo.png")}></img>
                 </Row>
@@ -81,9 +96,9 @@ const activateAccountAPICall = () => {
                     <h2 style={{ width: "100%", textAlign: "center" }}>Activate Account</h2>
                 </Row>
                 <Row style={{ justifyContent: "center" }}>
-<ToastContainer />
-                        <Button  variant="dark" type="submit" onClick={handleSubmit}>
-                            Activate
+                    <ToastContainer />
+                    <Button variant="dark" type="submit" onClick={handleSubmit}>
+                        Activate
                         </Button>
 
 
